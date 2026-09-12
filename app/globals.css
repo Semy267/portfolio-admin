@@ -1,0 +1,311 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-yellow: var(--accent-yellow);
+  --color-accent-coral: var(--accent-coral);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  /* Shadow tokens */
+  --shadow-hard: 4px 4px 0 #0a0a0a;
+  --shadow-hard-lg: 6px 6px 0 #0a0a0a;
+  --shadow-hard-xl: 8px 8px 0 #0a0a0a;
+}
+
+@layer base {
+  :root {
+    --radius: 0px;
+    --radius-sm: 4px;
+    --height-navbar: 3.5rem;
+
+    /* Paper / Light mode */
+    --background: #f3f0e8;
+    --foreground: #0a0a0a;
+    --card: #fafaf7;
+    --card-foreground: #0a0a0a;
+    --popover: #fafaf7;
+    --popover-foreground: #0a0a0a;
+    --primary: #1d4ed8;
+    --primary-foreground: #ffffff;
+    --secondary: #e8e4d8;
+    --secondary-foreground: #0a0a0a;
+    --muted: #e8e4d8;
+    --muted-foreground: #525252;
+    --accent: #84cc16;
+    --accent-foreground: #0a0a0a;
+    --accent-yellow: #eab308;
+    --accent-coral: #ef4444;
+    --input: #e8e4d8;
+    --border: #0a0a0a;
+    --destructive: #ef4444;
+    --destructive-foreground: #ffffff;
+  }
+
+  .dark {
+    /* Charcoal / Dark mode */
+    --background: #141414;
+    --foreground: #f0ede5;
+    --card: #1c1c1c;
+    --card-foreground: #f0ede5;
+    --popover: #1c1c1c;
+    --popover-foreground: #f0ede5;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --secondary: #2a2a2a;
+    --secondary-foreground: #f0ede5;
+    --muted: #2a2a2a;
+    --muted-foreground: #a3a3a3;
+    --accent: #a3e635;
+    --accent-foreground: #0a0a0a;
+    --accent-yellow: #fde047;
+    --accent-coral: #f87171;
+    --input: #2a2a2a;
+    --border: #0a0a0a;
+    --destructive: #f87171;
+    --destructive-foreground: #0a0a0a;
+  }
+
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--border);
+  }
+
+  html {
+    /* Grid background — light mode */
+    background-color: var(--background);
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 31px,
+        rgba(0, 0, 0, 0.04) 31px,
+        rgba(0, 0, 0, 0.04) 32px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 31px,
+        rgba(0, 0, 0, 0.04) 31px,
+        rgba(0, 0, 0, 0.04) 32px
+      );
+  }
+
+  html.dark {
+    /* Grid background — dark mode */
+    background-image: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 31px,
+        rgba(255, 255, 255, 0.05) 31px,
+        rgba(255, 255, 255, 0.05) 32px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 31px,
+        rgba(255, 255, 255, 0.05) 31px,
+        rgba(255, 255, 255, 0.05) 32px
+      );
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold;
+  }
+
+  button {
+    @apply cursor-pointer focus:outline-hidden focus:ring-0 focus-visible:ring-0 focus-visible:outline-hidden;
+  }
+
+  em {
+    @apply text-xs text-red-500;
+  }
+}
+
+/* ─── BRUTALIST UTILITIES ─────────────────────────────────── */
+
+@utility shadow-hard {
+  box-shadow: 4px 4px 0 #0a0a0a;
+}
+
+@utility shadow-hard-lg {
+  box-shadow: 6px 6px 0 #0a0a0a;
+}
+
+@utility shadow-hard-xl {
+  box-shadow: 8px 8px 0 #0a0a0a;
+}
+
+@utility border-brutal {
+  border: 2px solid #0a0a0a;
+}
+
+@utility border-brutal-heavy {
+  border: 3px solid #0a0a0a;
+}
+
+/* ─── GENERAL UTILITIES ───────────────────────────────────── */
+
+@utility text-balance {
+  text-wrap: balance;
+}
+
+@utility container {
+  max-width: 1120px;
+  width: 100%;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 1.5vw, 2rem);
+}
+
+/* ─── FORM ELEMENTS ───────────────────────────────────────── */
+
+.input {
+  @apply h-10 w-full border-2 border-border bg-input px-3 py-2;
+  border-radius: 0;
+}
+
+/* ─── SKELETON ────────────────────────────────────────────── */
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton {
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  background-color: #d9d9d9;
+  background-image: linear-gradient(90deg, #fafafa, #d9d9d9, #fafafa);
+  background-size: 200% 100%;
+  -webkit-animation: skeleton-loading 1.8s linear infinite;
+  animation: skeleton-loading 1.8s linear infinite;
+}
+
+/* ─── LOADING SPINNER ─────────────────────────────────────── */
+
+.loader {
+  position: relative;
+  width: 64px;
+  height: 60px;
+}
+
+.loader::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  background: #fff;
+  width: 64px;
+  height: 32px;
+  border-radius: 0 0 50px 50px;
+  animation: move 0.5s linear infinite alternate;
+}
+
+.loader::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  background: var(--primary);
+  width: 24px;
+  height: 24px;
+  transform: translateX(-50%) rotate(0deg);
+  animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: rotate(10deg);
+  }
+
+  100% {
+    transform: rotate(-10deg);
+  }
+}
+
+/* ─── SCROLLBAR ───────────────────────────────────────────── */
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--muted-foreground) var(--secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: var(--secondary);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: var(--muted-foreground);
+  border-radius: 0;
+}
+
+/* ─── VIEW TRANSITION ─────────────────────────────────────── */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-transition="true"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+html[data-theme-transition="true"]::view-transition-new(root) {
+  z-index: 9999;
+  animation: reveal 500ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes reveal {
+  from {
+    clip-path: circle(0px at var(--vt-x) var(--vt-y));
+  }
+
+  to {
+    clip-path: circle(var(--vt-radius, 150%) at var(--vt-x) var(--vt-y));
+  }
+}
