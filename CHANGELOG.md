@@ -2,6 +2,12 @@
 
 all notable changes to this project will be documented in this file.
 
+# [1.7.0] - 2026-09-14
+
+- (feat) - Phase 5 Appearance: Implemented Theme Settings CMS page with live Neo-Brutalist preview and palette/geometry controls.
+- (feat) - Added `useGetTheme` and `useUpdateTheme` React Query hooks connected to `/api/v1/admin/theme`.
+- (feat) - Added Appearance navigation group to Admin sidebar layout.
+
 # [1.6.0] - 2026-09-14
 
 - (feat) - Implemented full Admin CMS for Portfolio Management (Profile, Projects, Technologies, Skills, Experience, Social Links).

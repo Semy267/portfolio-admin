@@ -117,4 +117,9 @@ export const Apis = {
     delete: (id: string) =>
       Http.delete<IResponse<null>>(`/api/v1/admin/media/${id}`),
   },
+  theme: {
+    get: () => Http.get<IResponse<ICmsTheme>>("/api/v1/admin/theme"),
+    update: (data: Partial<ICmsTheme>) =>
+      Http.patch<IResponse<ICmsTheme>>("/api/v1/admin/theme", data),
+  },
 };

@@ -12,6 +12,7 @@ import {
   Briefcase,
   Share2,
   Image as ImageIcon,
+  Palette,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -63,6 +64,16 @@ const NAV_ITEMS = [
         label: "Media Library",
         href: "/media",
         icon: ImageIcon,
+      },
+    ],
+  },
+  {
+    title: "Appearance",
+    items: [
+      {
+        label: "Theme",
+        href: "/appearance",
+        icon: Palette,
       },
     ],
   },
