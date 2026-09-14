@@ -2,6 +2,11 @@
 
 all notable changes to this project will be documented in this file.
 
+# [1.8.0] - 2026-09-14
+
+- (feat) - Phase 8 Polish: added CTable empty states and standard ov_confirmation across admin CMS.
+- (refactor) - Centralized global mutations via TanStack Query and showMsg.
+
 # [1.7.0] - 2026-09-14
 
 - (feat) - Phase 5 Appearance: Implemented Theme Settings CMS page with live Neo-Brutalist preview and palette/geometry controls.

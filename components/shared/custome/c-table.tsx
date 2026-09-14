@@ -71,30 +71,45 @@ export default function CTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {column?.map((row, rowIndex) => (
-            <TableRow key={rowIndex}>
-              {select && setSelect && (
-                <TableCell className="sticky left-0 bg-background">
-                  <input
-                    type="checkbox"
-                    checked={select.includes(row.id)}
-                    onChange={() => handleRowSelect(row.id)}
-                  />
-                </TableCell>
-              )}
-              {colConfig.map((col, colIndex) => (
-                <TableCell
-                  onClick={() => onClick?.(row)}
-                  key={`${rowIndex}-${colIndex}`}
-                  className={cn(styleTextCol, {
-                    "text-right": colConfig.length - 1 === colIndex,
-                  })}
-                >
-                  {col.render(row, rowIndex)}
-                </TableCell>
-              ))}
+          {column?.length === 0 && !isLoading ? (
+            <TableRow>
+              <TableCell
+                colSpan={colConfig.length + (select && setSelect ? 1 : 0)}
+                className="h-32 text-center"
+              >
+                <div className="flex flex-col items-center justify-center space-y-2">
+                  <p className="text-muted-foreground text-sm">
+                    No data available.
+                  </p>
+                </div>
+              </TableCell>
             </TableRow>
-          ))}
+          ) : (
+            column?.map((row, rowIndex) => (
+              <TableRow key={rowIndex}>
+                {select && setSelect && (
+                  <TableCell className="sticky left-0 bg-background">
+                    <input
+                      type="checkbox"
+                      checked={select.includes(row.id)}
+                      onChange={() => handleRowSelect(row.id)}
+                    />
+                  </TableCell>
+                )}
+                {colConfig.map((col, colIndex) => (
+                  <TableCell
+                    onClick={() => onClick?.(row)}
+                    key={`${rowIndex}-${colIndex}`}
+                    className={cn(styleTextCol, {
+                      "text-right": colConfig.length - 1 === colIndex,
+                    })}
+                  >
+                    {col.render(row, rowIndex)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          )}
         </TableBody>
         {isLoading && (
           <TableFooter>

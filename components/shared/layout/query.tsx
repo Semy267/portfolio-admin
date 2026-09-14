@@ -6,7 +6,7 @@ import {
   QueryClientProvider,
   MutationCache,
 } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { showMsg } from "@/lib/utils";
 import store from "@/store";
 
 function makeQueryClient() {
@@ -34,7 +34,7 @@ function makeQueryClient() {
             typeof successMsg === "function"
               ? successMsg(data, vars)
               : successMsg;
-          if (msg) toast.success(msg);
+          if (msg) showMsg({ title: "Success", desc: msg, type: "success" });
         }
 
         if (invalidatesQuery) {
@@ -66,7 +66,7 @@ function makeQueryClient() {
           apiMsg ||
           "An error occurred";
 
-        toast.error(msg);
+        showMsg({ title: "Error", desc: msg, type: "error" });
       },
       onSettled: (_data, _error, _vars, _ctx, mutation) => {
         if (!mutation.meta?.disableGlobalLoading && !mutation.meta?.silent) {

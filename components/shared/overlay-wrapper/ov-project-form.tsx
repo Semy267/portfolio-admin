@@ -10,7 +10,7 @@ import { useCreateProject, useUpdateProject } from "@/services/projectService";
 import { useGetTechnologies } from "@/services/technologyService";
 import { ProjectTechPicker } from "@/components/module/projects/project-tech-picker";
 import { ProjectThumbnailPicker } from "@/components/module/projects/project-thumbnail-picker";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye } from "lucide-react";
 
 export interface OvProjectFormProps {
   project?: ICmsProject | null;
@@ -246,25 +246,50 @@ export default function OvProjectForm({
         />
       </div>
 
-      <div className="flex justify-end gap-2 pt-4 border-t-2 border-border">
-        <CButton
-          title="Cancel"
-          type="button"
-          variant="outline"
-          onClick={() => onClose?.()}
-          className="border-2 border-border font-bold"
-        />
-        <CButton
-          title={project ? "Update Project" : "Create Project"}
-          type="submit"
-          disabled={isSaving}
-          className="border-2 border-border shadow-hard font-bold"
-          icon={
-            isSaving ? (
-              <Loader2 className="w-4 h-4 animate-spin mr-2" />
-            ) : undefined
-          }
-        />
+      <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t-2 border-border">
+        <div>
+          {project && formData.slug && (
+            <CButton
+              title="Preview Draft"
+              type="button"
+              variant="outline"
+              onClick={() => {
+                const frontendUrl =
+                  process.env.NEXT_PUBLIC_FRONTEND_URL ||
+                  "http://localhost:3000";
+                const secret =
+                  process.env.NEXT_PUBLIC_PREVIEW_SECRET ||
+                  "dev-preview-secret-key";
+                window.open(
+                  `${frontendUrl}/projects/${formData.slug}?preview=${secret}`,
+                  "_blank",
+                );
+              }}
+              className="border-2 border-border font-bold w-full sm:w-auto"
+              icon={<Eye className="w-4 h-4 mr-2" />}
+            />
+          )}
+        </div>
+        <div className="flex items-center justify-end gap-2">
+          <CButton
+            title="Cancel"
+            type="button"
+            variant="outline"
+            onClick={() => onClose?.()}
+            className="border-2 border-border font-bold"
+          />
+          <CButton
+            title={project ? "Update Project" : "Create Project"}
+            type="submit"
+            disabled={isSaving}
+            className="border-2 border-border shadow-hard font-bold"
+            icon={
+              isSaving ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : undefined
+            }
+          />
+        </div>
       </div>
     </form>
   );

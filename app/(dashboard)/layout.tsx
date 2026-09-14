@@ -13,6 +13,7 @@ import {
   Share2,
   Image as ImageIcon,
   Palette,
+  Search,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -80,6 +81,11 @@ const NAV_ITEMS = [
   {
     title: "Settings",
     items: [
+      {
+        label: "SEO & Site Meta",
+        href: "/settings/seo",
+        icon: Search,
+      },
       {
         label: "Social Links",
         href: "/settings/social-links",

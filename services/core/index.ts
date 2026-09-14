@@ -122,4 +122,13 @@ export const Apis = {
     update: (data: Partial<ICmsTheme>) =>
       Http.patch<IResponse<ICmsTheme>>("/api/v1/admin/theme", data),
   },
+  siteSettings: {
+    get: () =>
+      Http.get<IResponse<ICmsSiteSettings>>("/api/v1/admin/settings/site"),
+    update: (data: Partial<ICmsSiteSettings>) =>
+      Http.put<IResponse<ICmsSiteSettings>>(
+        "/api/v1/admin/settings/site",
+        data,
+      ),
+  },
 };
