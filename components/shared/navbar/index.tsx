@@ -3,13 +3,7 @@
 import Link from "next/link";
 import React, { useState } from "react";
 import { ThemeToggle } from "./theme-toggle";
-import {
-  BookOpen,
-  ShieldCheck,
-  UserCheck,
-  LogOut,
-  Lock,
-} from "lucide-react";
+import { BookOpen, ShieldCheck, UserCheck, LogOut, Lock } from "lucide-react";
 import { useAuth } from "@/components/shared/auth/auth-context";
 import { LoginDialog } from "@/components/shared/auth/login-dialog";
 import { Button } from "@/components/ui/button";

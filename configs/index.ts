@@ -1,5 +1,8 @@
 export const configs = {
-  API_BASE: process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8000",
+  API_BASE:
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.NEXT_PUBLIC_API_BASE ||
+    "http://localhost:5000",
   API_KEY: process.env.NEXT_PUBLIC_API_KEY,
   URL_IMG: process.env.NEXT_PUBLIC_URL_IMG || "",
   URL_DOMAIN: process.env.NEXT_PUBLIC_URL_DOMAIN,

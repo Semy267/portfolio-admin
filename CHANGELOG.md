@@ -2,6 +2,13 @@
 
 all notable changes to this project will be documented in this file.
 
+# [1.6.0] - 2026-09-14
+
+- (feat) - Implemented full Admin CMS for Portfolio Management (Profile, Projects, Technologies, Skills, Experience, Social Links).
+- (feat) - Built Media Library with file upload, search, preview, and delete.
+- (feat) - Built dynamic Media Picker dialog (`ov_media_picker`) and Project Thumbnail Picker component.
+- (refactor) - Standardized UI to use base `CImage` and `Skeleton` components and configured `MutationCache` via `meta`.
+
 # [1.5.2] - 2026-09-11
 
 - (refactor) - Standardized all project mutations and queries to TanStack React Query hooks (`useCreateProject`, `useUploadEpub`, `useUpdateProject`, `useGetChapterPreview`, `useRecompileProject`) and removed deprecated `projectService` object.

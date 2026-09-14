@@ -6,6 +6,7 @@ import errorHandler from "./error-handler";
 const createAxiosInstance = (baseURL: string = ""): AxiosInstance => {
   const instance = axios.create({
     baseURL,
+    withCredentials: true,
     headers: {
       "Content-Type": "application/json",
       apiKey: configs.API_KEY,

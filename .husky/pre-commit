@@ -8,6 +8,31 @@ if git diff --cached --numstat | awk '{ if ($1 > 50000) { print $2 } }' | grep -
   exit 1
 fi
 
+# Check .tsx files line count (max 300 lines)
+tsx_files=$(git diff --cached --name-only --diff-filter=ACM | grep '\.tsx$' || true)
+if [ -n "$tsx_files" ]; then
+  has_error=0
+  while IFS= read -r file; do
+    [ -z "$file" ] && continue
+    if [ -f "$file" ]; then
+      lines=$(wc -l < "$file")
+      if [ "$lines" -gt 300 ]; then
+        if [ "$has_error" -eq 0 ]; then
+          echo "Error: File .tsx tidak boleh melebihi 300 baris kode:"
+          has_error=1
+        fi
+        echo "  - $file ($lines lines)"
+      fi
+    fi
+  done <<EOF
+$tsx_files
+EOF
+  if [ "$has_error" -eq 1 ]; then
+    echo "Silakan pecah komponen atau ekstrak logic ke custom hooks/subcomponents sebelum commit."
+    exit 1
+  fi
+fi
+
 pnpm run check-format || (
   echo "Please run \`pnpm run format\`"
   exit 1

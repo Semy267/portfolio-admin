@@ -2,29 +2,26 @@
 import CButton from "@/components/shared/custome/c-button";
 import CDialog from "@/components/shared/custome/c-dialog";
 import CDrawer from "@/components/shared/custome/c-drawer";
-import store from "@/store";
+import { useDialog } from "@/lib/hooks";
 
 export default function DemoOverlay() {
-  const { setOpenOverlay: setOpenDialog } = store();
+  const confirmDialog = useDialog("ov_confirmation");
 
   const handleConfirmation = (isClose: boolean = false) => {
-    setOpenDialog({
-      id: "CONFRIMATION",
+    confirmDialog.open({
       title: "Confirmation",
       isClose,
-      data: {
-        onConfirmation: () => console.log("confirm"),
-      },
+      message: "Are you sure want to delete your life?",
+      onConfirmation: () => console.log("confirm"),
     });
   };
   const handleConfirmDisableInteraction = (isClose: boolean = false) => {
-    setOpenDialog({
-      id: "CONFRIMATION",
+    confirmDialog.open({
+      title: "Confirmation",
       isClose,
       disableOutsideInteraction: true,
-      data: {
-        onConfirmation: () => console.log("confirm"),
-      },
+      message: "Are you sure want to delete your life?",
+      onConfirmation: () => console.log("confirm"),
     });
   };
   return (

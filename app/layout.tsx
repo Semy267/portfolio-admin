@@ -22,8 +22,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "My Own Boilerplate",
-  description:
-    "A custom Next.js boilerplate with modern tooling.",
+  description: "A custom Next.js boilerplate with modern tooling.",
 };
 
 export default function RootLayout({

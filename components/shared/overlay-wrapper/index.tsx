@@ -1,9 +1,9 @@
 import * as React from "react";
 import { useBreakpoint } from "@/lib/hooks";
 import store from "@/store";
-import OvConfirmation from "./ov-confirmation";
 import CDrawer from "../custome/c-drawer";
 import CDialog from "../custome/c-dialog";
+import { OVERLAY_REGISTRY } from "./registry";
 
 export default function OverlayWrapper() {
   const { isMobile } = useBreakpoint();
@@ -17,12 +17,7 @@ export default function OverlayWrapper() {
   const titleAlign = overlay?.titleAlign || "start";
   const disableOutsideInteraction = overlay?.disableOutsideInteraction || false;
 
-  const Content = () => {
-    switch (id) {
-      case "CONFRIMATION":
-        return <OvConfirmation />;
-    }
-  };
+  const ActiveContent = id ? OVERLAY_REGISTRY[id] : null;
 
   const sharedProps = {
     open,
@@ -33,7 +28,9 @@ export default function OverlayWrapper() {
     titleAlign,
     isPadding,
     disableOutsideInteraction,
-    children: <Content />,
+    children: ActiveContent ? (
+      <ActiveContent {...overlay?.data} onClose={closeOverlay} />
+    ) : null,
   };
 
   return isMobile ? <CDrawer {...sharedProps} /> : <CDialog {...sharedProps} />;
