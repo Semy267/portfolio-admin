@@ -4,7 +4,29 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import CSelect from "@/components/shared/form/select";
 import { RotateCcw, Save } from "lucide-react";
+
+const BORDER_WIDTH_OPTIONS = [
+  { label: "1px", value: "1px" },
+  { label: "2px (Default)", value: "2px" },
+  { label: "3px", value: "3px" },
+  { label: "4px", value: "4px" },
+];
+
+const SHADOW_OPTIONS = [
+  { label: "2px", value: "2px" },
+  { label: "4px (Default)", value: "4px" },
+  { label: "6px", value: "6px" },
+  { label: "8px", value: "8px" },
+];
+
+const RADIUS_OPTIONS = [
+  { label: "0px (Brutal)", value: "0px" },
+  { label: "2px", value: "2px" },
+  { label: "4px", value: "4px" },
+  { label: "8px", value: "8px" },
+];
 
 export interface ThemeFormValues {
   primaryColor: string;
@@ -130,61 +152,41 @@ export const ThemeForm: React.FC<ThemeFormProps> = ({
           Geometry & Shadows
         </h3>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase">Border Width</Label>
-            <select
-              value={values.borderWidth}
-              onChange={(e) => onChange("borderWidth", e.target.value)}
-              className="w-full h-10 border-2 border-border bg-input px-2 text-sm font-bold"
-            >
-              <option value="1px">1px</option>
-              <option value="2px">2px (Default)</option>
-              <option value="3px">3px</option>
-              <option value="4px">4px</option>
-            </select>
-          </div>
+          <CSelect
+            label="Border Width"
+            value={values.borderWidth}
+            onChange={(val) => onChange("borderWidth", val)}
+            options={BORDER_WIDTH_OPTIONS}
+            className="w-full border-2 border-border bg-input font-bold text-sm"
+            classNameParent="space-y-1.5 [&>label]:text-xs [&>label]:font-bold [&>label]:uppercase"
+          />
 
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase">Shadow X</Label>
-            <select
-              value={values.shadowX}
-              onChange={(e) => onChange("shadowX", e.target.value)}
-              className="w-full h-10 border-2 border-border bg-input px-2 text-sm font-bold"
-            >
-              <option value="2px">2px</option>
-              <option value="4px">4px (Default)</option>
-              <option value="6px">6px</option>
-              <option value="8px">8px</option>
-            </select>
-          </div>
+          <CSelect
+            label="Shadow X"
+            value={values.shadowX}
+            onChange={(val) => onChange("shadowX", val)}
+            options={SHADOW_OPTIONS}
+            className="w-full border-2 border-border bg-input font-bold text-sm"
+            classNameParent="space-y-1.5 [&>label]:text-xs [&>label]:font-bold [&>label]:uppercase"
+          />
 
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase">Shadow Y</Label>
-            <select
-              value={values.shadowY}
-              onChange={(e) => onChange("shadowY", e.target.value)}
-              className="w-full h-10 border-2 border-border bg-input px-2 text-sm font-bold"
-            >
-              <option value="2px">2px</option>
-              <option value="4px">4px (Default)</option>
-              <option value="6px">6px</option>
-              <option value="8px">8px</option>
-            </select>
-          </div>
+          <CSelect
+            label="Shadow Y"
+            value={values.shadowY}
+            onChange={(val) => onChange("shadowY", val)}
+            options={SHADOW_OPTIONS}
+            className="w-full border-2 border-border bg-input font-bold text-sm"
+            classNameParent="space-y-1.5 [&>label]:text-xs [&>label]:font-bold [&>label]:uppercase"
+          />
 
-          <div className="space-y-1.5">
-            <Label className="text-xs font-bold uppercase">Radius</Label>
-            <select
-              value={values.borderRadius}
-              onChange={(e) => onChange("borderRadius", e.target.value)}
-              className="w-full h-10 border-2 border-border bg-input px-2 text-sm font-bold"
-            >
-              <option value="0px">0px (Brutal)</option>
-              <option value="2px">2px</option>
-              <option value="4px">4px</option>
-              <option value="8px">8px</option>
-            </select>
-          </div>
+          <CSelect
+            label="Radius"
+            value={values.borderRadius}
+            onChange={(val) => onChange("borderRadius", val)}
+            options={RADIUS_OPTIONS}
+            className="w-full border-2 border-border bg-input font-bold text-sm"
+            classNameParent="space-y-1.5 [&>label]:text-xs [&>label]:font-bold [&>label]:uppercase"
+          />
         </div>
       </div>
 

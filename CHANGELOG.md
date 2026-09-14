@@ -7,6 +7,7 @@ all notable changes to this project will be documented in this file.
 - (feat) - Phase 5 Appearance: Implemented Theme Settings CMS page with live Neo-Brutalist preview and palette/geometry controls.
 - (feat) - Added `useGetTheme` and `useUpdateTheme` React Query hooks connected to `/api/v1/admin/theme`.
 - (feat) - Added Appearance navigation group to Admin sidebar layout.
+- (refactor) - Standardized Geometry & Shadows form controls to use base component `CSelect` (`@/components/shared/form/select`).
 
 # [1.6.0] - 2026-09-14
 
