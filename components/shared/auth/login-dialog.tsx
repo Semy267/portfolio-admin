@@ -33,7 +33,7 @@ export function LoginDialog({ trigger, open, onOpenChange }: LoginDialogProps) {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  const { loginAsAdmin, continueAsGuest, isSuperadmin } = useAuth();
+  const { loginAsAdmin, isSuperadmin } = useAuth();
 
   const handleAdminSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,13 +44,6 @@ export function LoginDialog({ trigger, open, onOpenChange }: LoginDialogProps) {
     if (success) {
       setShowOpen(false);
     }
-  };
-
-  const handleGuestClick = async () => {
-    setSubmitting(true);
-    await continueAsGuest();
-    setSubmitting(false);
-    setShowOpen(false);
   };
 
   return (
@@ -118,34 +111,6 @@ export function LoginDialog({ trigger, open, onOpenChange }: LoginDialogProps) {
             {submitting ? "Memproses..." : "Masuk sebagai Superadmin"}
           </Button>
         </form>
-
-        <div className="relative my-2">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t-2 border-border" />
-          </div>
-          <div className="relative flex justify-center text-[10px] uppercase font-mono font-bold">
-            <span className="bg-card px-2 text-muted-foreground">
-              Atau Mode Portofolio Demo
-            </span>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGuestClick}
-            disabled={submitting}
-            className="w-full h-10 text-xs font-bold uppercase gap-2 border-2 border-border shadow-hard hover:bg-secondary"
-          >
-            <UserCheck className="w-3.5 h-3.5 text-primary" />
-            Lanjut sebagai Tamu (Guest Demo)
-          </Button>
-          <p className="text-[11px] text-muted-foreground text-center font-mono">
-            Mode Tamu dibatasi <b>5.000 karakter</b> translasi dan proyek demo
-            akan otomatis dihapus dalam <b>24 jam</b>.
-          </p>
-        </div>
       </DialogContent>
     </Dialog>
   );

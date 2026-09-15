@@ -19,10 +19,21 @@ const createAxiosInstance = (baseURL: string = ""): AxiosInstance => {
 
 const applyInterceptor = (axiosInstance: AxiosInstance) => {
   axiosInstance.interceptors.request.use(async (request) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
-      if (token) {
-        request.headers.Authorization = `Bearer ${token}`;
+    if (typeof window === "undefined") {
+      try {
+        const { cookies } = await import("next/headers");
+        const cookieStore = await cookies();
+        const cookieString = cookieStore
+          .getAll()
+          .filter((c) => c.name.startsWith("better-auth"))
+          .map((c) => `${c.name}=${c.value}`)
+          .join("; ");
+
+        if (cookieString) {
+          request.headers.Cookie = cookieString;
+        }
+      } catch (error) {
+        // Abaikan jika dipanggil di luar konteks Next.js Server Components
       }
     }
     return request;

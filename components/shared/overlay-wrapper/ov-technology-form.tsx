@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import CInput from "@/components/shared/form/input";
-import CSelect from "@/components/shared/form/select";
+import React from "react";
+import { useForm } from "@tanstack/react-form";
+import CInputForm from "@/components/shared/form/input/input-form";
+import CSelectForm from "@/components/shared/form/select/select-form";
 import CButton from "@/components/shared/custome/c-button";
 import {
   useCreateTechnology,
@@ -30,90 +31,78 @@ export default function OvTechnologyForm({
   const { createTechnology, isLoading: isCreating } = useCreateTechnology();
   const { updateTechnology, isLoading: isUpdating } = useUpdateTechnology();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    slug: "",
-    category: "FRONTEND",
-    icon: "",
-    sortOrder: 0,
+  const form = useForm({
+    defaultValues: {
+      name: technology?.name || "",
+      slug: technology?.slug || "",
+      category: technology?.category || "FRONTEND",
+      icon: technology?.icon || "",
+      sortOrder: technology?.sortOrder || 0,
+    },
+    onSubmit: async ({ value }) => {
+      if (technology) {
+        updateTechnology(
+          { id: technology.id, payload: value },
+          { onSuccess: () => onClose?.() },
+        );
+      } else {
+        createTechnology(value, { onSuccess: () => onClose?.() });
+      }
+    },
   });
-
-  useEffect(() => {
-    if (technology) {
-      setFormData({
-        name: technology.name,
-        slug: technology.slug,
-        category: technology.category,
-        icon: technology.icon || "",
-        sortOrder: technology.sortOrder,
-      });
-    } else {
-      setFormData({
-        name: "",
-        slug: "",
-        category: "FRONTEND",
-        icon: "",
-        sortOrder: 0,
-      });
-    }
-  }, [technology]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (technology) {
-      updateTechnology(
-        { id: technology.id, payload: formData },
-        { onSuccess: () => onClose?.() },
-      );
-    } else {
-      createTechnology(formData, { onSuccess: () => onClose?.() });
-    }
-  };
 
   const isSaving = isCreating || isUpdating;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-      <CInput
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4 pt-1"
+    >
+      <CInputForm
+        form={form}
+        name="name"
         label="Name *"
-        value={formData.name}
+        required
+        className="border-2 border-border"
         onChange={(e) => {
           const name = e.target.value;
           const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-          setFormData((p) => ({
-            ...p,
-            name,
-            slug: technology ? p.slug : slug,
-          }));
+          form.setFieldValue("name", name);
+          if (!technology) {
+            form.setFieldValue("slug", slug);
+          }
         }}
-        required
-        className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="slug"
         label="Slug *"
-        value={formData.slug}
-        onChange={(e) => setFormData((p) => ({ ...p, slug: e.target.value }))}
         required
         className="border-2 border-border font-mono text-sm"
       />
 
-      <CSelect
+      <CSelectForm
+        form={form}
+        name="category"
         label="Category"
         options={CATEGORY_OPTIONS}
-        value={formData.category}
-        onChange={(val) => setFormData((p) => ({ ...p, category: val }))}
         className="w-full border-2 border-border font-bold text-sm"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="sortOrder"
         type="number"
         label="Sort Order"
-        value={String(formData.sortOrder)}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, sortOrder: Number(e.target.value) }))
-        }
         className="border-2 border-border"
+        onChange={(e) => {
+          form.setFieldValue("sortOrder", Number(e.target.value));
+        }}
       />
 
       <div className="flex justify-end gap-2 pt-4 border-t-2 border-border">

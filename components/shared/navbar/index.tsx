@@ -48,7 +48,7 @@ export default function Navbar() {
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
-                  <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase px-2.5 py-1 bg-accent-yellow text-foreground border-2 border-border shadow-hard">
+                  {/* <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase px-2.5 py-1 bg-accent-yellow text-foreground border-2 border-border shadow-hard">
                     <UserCheck className="w-3.5 h-3.5" />
                     Guest Demo
                   </span>
@@ -60,7 +60,7 @@ export default function Navbar() {
                   >
                     <Lock className="w-3.5 h-3.5 text-primary" />
                     Login Admin
-                  </Button>
+                  </Button> */}
                 </div>
               )}
 

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import CInput from "@/components/shared/form/input";
+import React from "react";
+import { useForm } from "@tanstack/react-form";
+import CInputForm from "@/components/shared/form/input/input-form";
 import CButton from "@/components/shared/custome/c-button";
 import {
   useCreateSocialLink,
@@ -21,91 +22,75 @@ export default function OvSocialLinkForm({
   const { createSocialLink, isLoading: isCreating } = useCreateSocialLink();
   const { updateSocialLink, isLoading: isUpdating } = useUpdateSocialLink();
 
-  const [formData, setFormData] = useState({
-    platform: "github",
-    label: "",
-    url: "",
-    icon: "",
-    sortOrder: 0,
-    visible: true,
+  const form = useForm({
+    defaultValues: {
+      platform: socialLink?.platform || "github",
+      label: socialLink?.label || "",
+      url: socialLink?.url || "",
+      icon: socialLink?.icon || "",
+      sortOrder: socialLink?.sortOrder || 0,
+      visible: socialLink?.visible ?? true,
+    },
+    onSubmit: async ({ value }) => {
+      if (socialLink) {
+        updateSocialLink(
+          { id: socialLink.id, payload: value },
+          { onSuccess: () => onClose?.() },
+        );
+      } else {
+        createSocialLink(value, { onSuccess: () => onClose?.() });
+      }
+    },
   });
-
-  useEffect(() => {
-    if (socialLink) {
-      setFormData({
-        platform: socialLink.platform,
-        label: socialLink.label,
-        url: socialLink.url,
-        icon: socialLink.icon || "",
-        sortOrder: socialLink.sortOrder,
-        visible: socialLink.visible,
-      });
-    } else {
-      setFormData({
-        platform: "github",
-        label: "",
-        url: "",
-        icon: "",
-        sortOrder: 0,
-        visible: true,
-      });
-    }
-  }, [socialLink]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (socialLink) {
-      updateSocialLink(
-        { id: socialLink.id, payload: formData },
-        { onSuccess: () => onClose?.() },
-      );
-    } else {
-      createSocialLink(formData, { onSuccess: () => onClose?.() });
-    }
-  };
 
   const isSaving = isCreating || isUpdating;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-      <CInput
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4 pt-1"
+    >
+      <CInputForm
+        form={form}
+        name="platform"
         label="Platform *"
-        value={formData.platform}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, platform: e.target.value }))
-        }
         required
         placeholder="github, linkedin, twitter, etc."
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="label"
         label="Display Label *"
-        value={formData.label}
-        onChange={(e) => setFormData((p) => ({ ...p, label: e.target.value }))}
         required
         placeholder="e.g. GitHub Profile"
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="url"
         type="url"
         label="Destination URL *"
-        value={formData.url}
-        onChange={(e) => setFormData((p) => ({ ...p, url: e.target.value }))}
         required
         placeholder="https://..."
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="sortOrder"
         type="number"
         label="Sort Order"
-        value={String(formData.sortOrder)}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, sortOrder: Number(e.target.value) }))
-        }
         className="border-2 border-border"
+        onChange={(e) => {
+          form.setFieldValue("sortOrder", Number(e.target.value));
+        }}
       />
 
       <div className="flex justify-end gap-2 pt-4 border-t-2 border-border">

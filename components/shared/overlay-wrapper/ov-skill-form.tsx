@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import CInput from "@/components/shared/form/input";
+import React from "react";
+import { useForm } from "@tanstack/react-form";
+import CInputForm from "@/components/shared/form/input/input-form";
 import { CCheckbox } from "@/components/shared/form/checkbox";
 import CButton from "@/components/shared/custome/c-button";
 import { useCreateSkill, useUpdateSkill } from "@/services/skillService";
@@ -16,83 +17,74 @@ export default function OvSkillForm({ skill, onClose }: OvSkillFormProps) {
   const { createSkill, isLoading: isCreating } = useCreateSkill();
   const { updateSkill, isLoading: isUpdating } = useUpdateSkill();
 
-  const [formData, setFormData] = useState({
-    name: "",
-    category: "ENGINEERING",
-    sortOrder: 0,
-    visible: true,
+  const form = useForm({
+    defaultValues: {
+      name: skill?.name || "",
+      category: skill?.category || "ENGINEERING",
+      sortOrder: skill?.sortOrder || 0,
+      visible: skill?.visible ?? true,
+    },
+    onSubmit: async ({ value }) => {
+      if (skill) {
+        updateSkill(
+          { id: skill.id, payload: value },
+          { onSuccess: () => onClose?.() },
+        );
+      } else {
+        createSkill(value, { onSuccess: () => onClose?.() });
+      }
+    },
   });
-
-  useEffect(() => {
-    if (skill) {
-      setFormData({
-        name: skill.name,
-        category: skill.category,
-        sortOrder: skill.sortOrder,
-        visible: skill.visible,
-      });
-    } else {
-      setFormData({
-        name: "",
-        category: "ENGINEERING",
-        sortOrder: 0,
-        visible: true,
-      });
-    }
-  }, [skill]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (skill) {
-      updateSkill(
-        { id: skill.id, payload: formData },
-        { onSuccess: () => onClose?.() },
-      );
-    } else {
-      createSkill(formData, { onSuccess: () => onClose?.() });
-    }
-  };
 
   const isSaving = isCreating || isUpdating;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 pt-1">
-      <CInput
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="space-y-4 pt-1"
+    >
+      <CInputForm
+        form={form}
+        name="name"
         label="Name *"
-        value={formData.name}
-        onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))}
         required
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="category"
         label="Category"
-        value={formData.category}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, category: e.target.value }))
-        }
         required
         placeholder="e.g. ENGINEERING, DATABASE, DESIGN"
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="sortOrder"
         type="number"
         label="Sort Order"
-        value={String(formData.sortOrder)}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, sortOrder: Number(e.target.value) }))
-        }
         className="border-2 border-border"
+        onChange={(e) => {
+          form.setFieldValue("sortOrder", Number(e.target.value));
+        }}
       />
 
       <div className="pt-2">
-        <CCheckbox
-          label="Visible on Portfolio"
-          checked={formData.visible}
-          onChange={(e) =>
-            setFormData((p) => ({ ...p, visible: e.target.checked }))
-          }
+        <form.Field
+          name="visible"
+          children={(field) => (
+            <CCheckbox
+              label="Visible on Portfolio"
+              checked={field.state.value as boolean}
+              onChange={(e) => field.handleChange(e.target.checked)}
+            />
+          )}
         />
       </div>
 

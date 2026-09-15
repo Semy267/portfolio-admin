@@ -19,7 +19,9 @@ const CImage = ({
 
   const source = !isError && src != null;
   const link = source ? src : Default;
-  const props = fill ? { fill, sizes: "100%" } : { sizes: "100vw" };
+  const props = fill
+    ? { fill, sizes: "100%" }
+    : { width, height, sizes: "100vw" };
 
   return (
     <div
@@ -42,8 +44,6 @@ const CImage = ({
         )}
         src={link}
         alt={alt}
-        width={width}
-        height={height}
         style={style}
         placeholder="empty"
         onError={() => setIsError(true)}

@@ -8,6 +8,8 @@ interface ISelectForm {
   name: string;
   options: IOpt[];
   placeholder?: string;
+  label?: string;
+  className?: string;
 }
 
 export default function CSelectForm({ form, name, ...props }: ISelectForm) {

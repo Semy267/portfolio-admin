@@ -7,11 +7,7 @@ export const Apis = {
         "/api/v1/auth/sign-in/email",
         payload,
       ),
-    guestLogin: () =>
-      Http.post<{ access_token: string; user: any }>(
-        "/api/v1/auth/anonymous",
-        {},
-      ),
+
     me: () => Http.get<any>("/api/v1/auth/get-session"),
   },
 

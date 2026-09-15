@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import CInput from "@/components/shared/form/input";
-import CTextarea from "@/components/shared/form/textarea/c-textarea";
+import React from "react";
+import { useForm } from "@tanstack/react-form";
+import CInputForm from "@/components/shared/form/input/input-form";
+import CTextareaForm from "@/components/shared/form/textarea/c-textarea-form";
 import CButton from "@/components/shared/custome/c-button";
 import {
   useCreateExperience,
@@ -22,126 +23,99 @@ export default function OvExperienceForm({
   const { createExperience, isLoading: isCreating } = useCreateExperience();
   const { updateExperience, isLoading: isUpdating } = useUpdateExperience();
 
-  const [formData, setFormData] = useState({
-    title: "",
-    organization: "",
-    description: "",
-    startDate: "",
-    endDate: "",
-    sortOrder: 0,
-    visible: true,
+  const form = useForm({
+    defaultValues: {
+      title: experience?.title || "",
+      organization: experience?.organization || "",
+      description: experience?.description || "",
+      startDate: experience?.startDate
+        ? new Date(experience.startDate).toISOString().split("T")[0]
+        : new Date().toISOString().split("T")[0],
+      endDate: experience?.endDate
+        ? new Date(experience.endDate).toISOString().split("T")[0]
+        : "",
+      sortOrder: experience?.sortOrder || 0,
+      visible: experience?.visible ?? true,
+    },
+    onSubmit: async ({ value }) => {
+      const payload = {
+        ...value,
+        endDate: value.endDate ? value.endDate : null,
+      };
+      if (experience) {
+        updateExperience(
+          { id: experience.id, payload },
+          { onSuccess: () => onClose?.() },
+        );
+      } else {
+        createExperience(payload, { onSuccess: () => onClose?.() });
+      }
+    },
   });
-
-  useEffect(() => {
-    if (experience) {
-      setFormData({
-        title: experience.title,
-        organization: experience.organization,
-        description: experience.description,
-        startDate: experience.startDate
-          ? new Date(experience.startDate).toISOString().split("T")[0] || ""
-          : "",
-        endDate: experience.endDate
-          ? new Date(experience.endDate).toISOString().split("T")[0] || ""
-          : "",
-        sortOrder: experience.sortOrder,
-        visible: experience.visible,
-      });
-    } else {
-      setFormData({
-        title: "",
-        organization: "",
-        description: "",
-        startDate: new Date().toISOString().split("T")[0] || "",
-        endDate: "",
-        sortOrder: 0,
-        visible: true,
-      });
-    }
-  }, [experience]);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      ...formData,
-      endDate: formData.endDate ? formData.endDate : null,
-    };
-    if (experience) {
-      updateExperience(
-        { id: experience.id, payload },
-        { onSuccess: () => onClose?.() },
-      );
-    } else {
-      createExperience(payload, { onSuccess: () => onClose?.() });
-    }
-  };
 
   const isSaving = isCreating || isUpdating;
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
       className="space-y-4 pt-1 max-h-[80vh] overflow-y-auto pr-1"
     >
-      <CInput
+      <CInputForm
+        form={form}
+        name="title"
         label="Role / Job Title *"
-        value={formData.title}
-        onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
         required
         className="border-2 border-border"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="organization"
         label="Organization / Company *"
-        value={formData.organization}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, organization: e.target.value }))
-        }
         required
         className="border-2 border-border"
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <CInput
+        <CInputForm
+          form={form}
+          name="startDate"
           type="date"
           label="Start Date *"
-          value={formData.startDate}
-          onChange={(e) =>
-            setFormData((p) => ({ ...p, startDate: e.target.value }))
-          }
           required
           className="border-2 border-border font-mono text-sm"
         />
 
-        <CInput
+        <CInputForm
+          form={form}
+          name="endDate"
           type="date"
           label="End Date (Empty = Present)"
-          value={formData.endDate}
-          onChange={(e) =>
-            setFormData((p) => ({ ...p, endDate: e.target.value }))
-          }
           className="border-2 border-border font-mono text-sm"
         />
       </div>
 
-      <CTextarea
+      <CTextareaForm
+        form={form}
+        name="description"
         label="Description *"
-        value={formData.description}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, description: e.target.value }))
-        }
         required
         className="border-2 border-border font-medium"
       />
 
-      <CInput
+      <CInputForm
+        form={form}
+        name="sortOrder"
         type="number"
         label="Sort Order"
-        value={String(formData.sortOrder)}
-        onChange={(e) =>
-          setFormData((p) => ({ ...p, sortOrder: Number(e.target.value) }))
-        }
         className="border-2 border-border"
+        onChange={(e) => {
+          form.setFieldValue("sortOrder", Number(e.target.value));
+        }}
       />
 
       <div className="flex justify-end gap-2 pt-4 border-t-2 border-border">
