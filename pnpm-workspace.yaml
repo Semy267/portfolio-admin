@@ -1,2 +1,6 @@
 allowBuilds:
   sharp: true
+  unrs-resolver: set this to true or false
+overrides:
+  "@types/react": 19.3.0
+  "@types/react-dom": 19.3.0
