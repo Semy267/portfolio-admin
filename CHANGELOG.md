@@ -4,6 +4,7 @@ all notable changes to this project will be documented in this file.
 
 # [1.8.0] - 2026-09-14
 
+- (fix) - Prevented hydration mismatch in theme toggle by adding mounted state.
 - (feat) - Authentication flow switch to cookie sessions and fix bugs
 - (feat) - Phase 8 Polish: added CTable empty states and standard ov_confirmation across admin CMS.
 - (refactor) - Centralized global mutations via TanStack Query and showMsg.

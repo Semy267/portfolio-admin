@@ -2,9 +2,15 @@
 import { useTheme } from "next-themes";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { flushSync } from "react-dom";
+import { useState, useEffect } from "react";
 
 export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
   const { theme, resolvedTheme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const toggleTheme = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const currentTheme = resolvedTheme || theme;
@@ -54,6 +60,17 @@ export function ThemeToggle() {
   };
 
   const isDark = (resolvedTheme || theme) === "dark";
+
+  if (!mounted) {
+    return (
+      <button
+        aria-label="Toggle Theme"
+        className="p-2 border-2 border-border bg-card hover:bg-secondary transition-colors cursor-pointer shadow-hard"
+      >
+        <div style={{ width: 20, height: 20 }} />
+      </button>
+    );
+  }
 
   return (
     <button
